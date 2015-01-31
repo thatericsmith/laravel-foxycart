@@ -2,13 +2,12 @@
 
 class WebhookController extends BaseController {
 
-	private $api_key = Config::get('foxycart.api-key');
-
 	public function receive()
 	{
 		$response = '';
+		$api_key = Config::get('foxycart.api-key');
 		// Handle the Webhook from Foxycart
-		if(!empty($this->api_key)):
+		if(!empty($api_key)):
 			if(isset($_POST["FoxyData"])):
 				$response = $this->handle_transaction_webhook();
 			elseif (isset($_POST["FoxySubscriptionData"])): 	
@@ -17,8 +16,8 @@ class WebhookController extends BaseController {
 				$response = 'No data received from Foxycart.';
 			endif;		
 		else:
-			$response = 'No Foxycart API Key set.'
-			Log::error($response)
+			$response = 'No Foxycart API Key set.';
+			Log::error($response);
 		endif;
 
 		return $response;
@@ -28,9 +27,10 @@ class WebhookController extends BaseController {
 		// ****************************************
 		// TRANSACTION DATAFEED
 		// ****************************************		
-		
+		$api_key = Config::get('foxycart.api-key');
+
 		try{
-			$foxyXML = rc4crypt::decrypt($this->api_key, urldecode($_POST['FoxyData']));
+			$foxyXML = rc4crypt::decrypt($api_key, urldecode($_POST['FoxyData']));
 		
 			$foxyResponse = simplexml_load_string($foxyXML);
 			$trans = $foxyResponse->transactions[0]->transaction[0];
@@ -44,12 +44,13 @@ class WebhookController extends BaseController {
 				// create a user
 				$user = new User;
 				$user->role = 'customer';
+				$user->foxycart_id = $trans->customer_id;
 			endif;
 			
 			// update the customer details
 			$user->name = $trans->customer_first_name.' '.$trans->customer_last_name;
 			$user->email = $trans->customer_email;
-			$user->address = $trans->customer_address1;
+			$user->address1 = $trans->customer_address1;
 			$user->address2 = $trans->customer_address2;
 			$user->city = $trans->customer_city;
 			$user->state = $trans->customer_state;
@@ -63,6 +64,7 @@ class WebhookController extends BaseController {
 			foreach($trans->transaction_details[0]->transaction_detail as $td):
 				# TODO - only allows for one subscription - takes the last one.
 				$user->subscription_token = $td->sub_token_url;
+				$user->subscription_active = 1;
 				$user->subscription_ends_at = $td->subscription_enddate;						
 			endforeach;
 
@@ -81,12 +83,14 @@ class WebhookController extends BaseController {
 		// ****************************************
 		// SUBSCRIPTION DATAFEED
 		// ****************************************
+		$api_key = Config::get('foxycart.api-key');
+
 		$failedDaysBeforeCancel = Config::get('foxycart.failedDaysBeforeCancel');
 		$billingReminderFrequencyInDays = Config::get('foxycart.billingReminderFrequencyInDays');
 		$updatePaymentMethodReminderDaysOfTheMonth = Config::get('foxycart.updatePaymentMethodReminderDaysOfTheMonth');
 		
 		$FoxyData_encrypted = urldecode($_POST["FoxySubscriptionData"]);
-		$FoxyData_decrypted = rc4crypt::decrypt($this->api_key,$FoxyData_encrypted);
+		$FoxyData_decrypted = rc4crypt::decrypt($api_key,$FoxyData_encrypted);
 		// make sure we have a valid character encoding
 		$enc = mb_detect_encoding($FoxyData_decrypted);
 		$FoxyData_decrypted = mb_convert_encoding($FoxyData_decrypted, 'UTF-8', $enc);

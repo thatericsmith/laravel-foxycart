@@ -24,8 +24,13 @@
                             </a>
                         </li>
                         <li class="">
-                            <a href="/">
-                                <i class="fa fa-comments"></i> <span>Subscriptions</span> 
+                            <a href="{{route('admin.user.index')}}">
+                                <i class="fa fa-users"></i> <span>Customers</span> 
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="{{route('admin.timeline')}}">
+                                <i class="fa fa-clock-o"></i> <span>Timeline</span> 
                             </a>
                         </li>
                         {{--

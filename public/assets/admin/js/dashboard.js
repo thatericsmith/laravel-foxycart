@@ -63,70 +63,26 @@ $(function() {
     // data tables
     $(".table-data").dataTable();
 
-    /* Morris.js Charts */ 
-    // Articles / Topics chart
-    if($('#revenue-chart').length){
-        var area = new Morris.Area({
-            element: 'revenue-chart',
-            resize: true,
-            data: [
-                {y: 'Monday', a: 2666, t: 2666},
-                {y: 'Tuesday', a: 2778, t: 2294},
-                {y: 'Wednesday', a: 4912, t: 1969},
-                {y: 'Thursday', a: 3767, t: 3597},
-                {y: 'Friday', a: 6810, t: 1914},
-                {y: 'Saturday', a: 5670, t: 4293},
-                {y: 'Sunday', a: 4820, t: 3795}
-            ],
-            xkey: 'y',
-            ykeys: ['a', 't'],
-            labels: ['Articles', 'Topics'],
-            lineColors: ['#a0d0e0', '#3c8dbc'],
-            hideHover: 'auto'
-        });
-
-        //Fix for charts under tabs
-        $('.box ul.nav a').on('shown.bs.tab', function(e) {
-            area.redraw();
-        });
-    }
-
-    if($('#add-topic-input').length){
-        // let's create a typeahead here with values from this weeks topics
-     
-        $( "#add-topic-input" ).autocomplete({
-          minLength: 0,
-          source: '/api/topic/autocomplete',
-          focus: function( event, ui ) {
-            $( "#add-topic-input" ).val( ui.item.label );
-            return false;
-          },
-          select: function( event, ui ) {
-            $( "#add-topic-input" ).val( ui.item.label );
-            $( "#add-topic-input-id" ).val( ui.item.value );
-     
-            return false;
-          }
-        })
-        .data( "ui-autocomplete" )._renderItem = function( ul, item ) {
-          return $( "<li>" )
-            .append( "<a>" + item.label + "</a>" )
-            .appendTo( ul );
-        };
-    }
-
-    $('select.admin-grader').change(function(){
-        var $select = $(this);
-        var grade = $select.val();
-        var qty = $select.attr('data-qty');
-        var article = $select.attr('data-article');
-
-        if(grade !== '' && confirm('Add '+qty+' '+grade+' grades to this article?')){
-            $.post('/admin/grade','grade='+grade+'&article='+article+'&qty='+qty,function(data){
-                //console.log(data);
-                location.reload();
-            });
-        }
+    
+    //BAR CHART
+    if($('#subscriptions-bar-chart'))
+    var bar = new Morris.Bar({
+        element: 'subscriptions-bar-chart',
+        resize: false,
+        data: [
+            {m: 'Jan', a: 100},
+            {m: 'Feb', a: 75},
+            {m: 'Mar', a: 50},
+            {m: 'Apr', a: 75},
+            {m: 'May', a: 50},
+            {m: 'Jun', a: 75},
+            {m: 'Jul', a: 100}
+        ],
+        barColors: ['#00a65a', '#f56954'],
+        xkey: 'm',
+        ykeys: ['a'],
+        labels: ['CPU'],
+        hideHover: 'auto'
     });
 
 

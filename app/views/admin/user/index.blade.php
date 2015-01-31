@@ -10,12 +10,12 @@
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Articles
+                        Customers
                         <small>Control panel</small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="{{URL::route('admin.index')}}"><i class="fa fa-dashboard"></i> Home</a></li>
-                        <li class="active">Articles</li>
+                        <li class="active">Customers</li>
                     </ol>
                 </section>
 
@@ -28,42 +28,30 @@
                             
                             <div class="box">
                                 <div class="box-header">
-                                    <h3 class="box-title">All Articles</h3>                                    
+                                    <h3 class="box-title">All Customers</h3>                                    
                                 </div><!-- /.box-header -->
                                 <div class="box-body table-responsive">
                                     <table id="example1" class="table table-bordered table-striped table-data">
                                         <thead>
                                             <tr>
-                                                <th>Date</th>
-                                                <th>Topic</th>
-                                                <th>Article</th>
-                                                <th>Source</th>
-                                                <th>Grade</th>
-                                                <th>URL</th>
+                                                <th>ID</th>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Status</th>
+                                                <th>Subscription</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($articles as $article)        
+                                            @foreach($users as $user)        
                                             <tr>
-                                                <td>{{$article->created_at}}</td>
-                                                <td><a href="{{$article->topic->admin_permalink()}}">{{$article->topic->title}}</a></td>
-                                                <td><a href="{{$article->admin_permalink()}}">{{$article->title}}</a></td>
-                                                <td>{{strtoupper($article->source)}}</td>
-                                                <td>{{$article->grade()}}</td>
-                                                <td>{{$article->url}}</td>
+                                                <td><a href="{{$user->admin_permalink()}}">{{$user->id}}</a></td>
+                                                <td>{{$user->name}}</td>
+                                                <td><a href="mailto:{{$user->email}}">{{$user->email}}</a></td>
+                                                <td>{{$user->subscription_active ? '<span class="label label-success">Active</span>' : '<span class="label label-danger">Inactive</span>'}}</td>
+                                                <td><a href="{{$user->admin_permalink()}}">View Subscription</a></td>
                                             </tr>
                                             @endforeach
                                         </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <th>Date</th>
-                                                <th>Topic</th>
-                                                <th>Article</th>
-                                                <th>Source</th>
-                                                <th>Grade</th>
-                                                <th>URL</th>
-                                            </tr>
-                                        </tfoot>
                                     </table>
                                 </div><!-- /.box-body -->
                             </div><!-- /.box -->
