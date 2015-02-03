@@ -33,21 +33,41 @@ App::after(function($request, $response)
 |
 */
 
-Route::filter('auth', function()
+Route::filter('auth.admin', function()
 {
-	if (Auth::guest())
-	{
-		if (Request::ajax())
-		{
+	if (Auth::guest()){
+		if (Request::ajax()){
 			return Response::make('Unauthorized', 401);
 		}
-		else
-		{
-			return Redirect::guest('login');
+		else{
+			return Redirect::guest('admin.login');
+		}
+	}
+	else{
+		$user = Auth::user();
+		if($user->role != 'admin'){
+			return Redirect::guest('admin.login');
 		}
 	}
 });
 
+Route::filter('auth.customer', function()
+{
+	if (Auth::guest()){
+		if (Request::ajax()){
+			return Response::make('Unauthorized', 401);
+		}
+		else{
+			return Redirect::guest('account.login');
+		}
+	}
+	else{
+		$user = Auth::user();
+		if($user->role != 'customer'){
+			return Redirect::guest('account.login');
+		}
+	}
+});
 
 Route::filter('auth.basic', function()
 {

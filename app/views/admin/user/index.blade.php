@@ -45,7 +45,7 @@
                                             @foreach($users as $user)        
                                             <tr>
                                                 <td><a href="{{$user->admin_permalink()}}">{{$user->id}}</a></td>
-                                                <td>{{$user->name}}</td>
+                                                <td><a href="{{$user->admin_permalink()}}">{{$user->name}}</a></td>
                                                 <td><a href="mailto:{{$user->email}}">{{$user->email}}</a></td>
                                                 <td>{{$user->subscription_active ? '<span class="label label-success">Active</span>' : '<span class="label label-danger">Inactive</span>'}}</td>
                                                 <td><a href="{{$user->admin_permalink()}}">View Subscription</a></td>

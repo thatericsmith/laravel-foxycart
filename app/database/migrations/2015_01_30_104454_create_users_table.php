@@ -14,7 +14,8 @@ class CreateUsersTable extends Migration {
 	{
 		Schema::create('users', function(Blueprint $table){
 			$table->increments('id');
-			$table->string('name')->nullable();
+			$table->string('first_name')->nullable();
+			$table->string('last_name')->nullable();
 			$table->string('email')->nullable();
 			$table->string('password')->nullable();
 			$table->string('role')->nullable();
@@ -30,6 +31,8 @@ class CreateUsersTable extends Migration {
 			$table->string('subscription_token')->nullable();
 			$table->tinyInteger('subscription_active')->default(0);
 			$table->string('last_four',4)->nullable();
+			$table->string('exp_month',2)->nullable();
+			$table->string('exp_year',4)->nullable();
 			$table->timestamp('subscription_ends_at')->nullable();
 			$table->rememberToken();
 			$table->timestamps();

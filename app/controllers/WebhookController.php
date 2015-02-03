@@ -2,6 +2,32 @@
 
 class WebhookController extends BaseController {
 
+	public function sso(){
+		$foxycart_api_key = $cart->f('api');
+		$user = Auth::user();
+		$user_is_authenticated = !empty($user->foxycart_id);
+		$return_hash = '';
+		$redirect_url = '';
+		$customer_id = 0;
+		$timestamp = 0;
+		$fcsid = '';
+		if($user_is_authenticated):
+			$customer_id = $user->foxycart_id;
+		endif;
+	
+		$redirect_url = 'https://' . $foxycart_domain . '/checkout?fc_auth_token=';
+	
+		if(isset($_REQUEST['timestamp']) && isset($_REQUEST['fcsid'])):
+			$fcsid = $_REQUEST['fcsid'];
+			$timestamp = $_REQUEST['timestamp'] + (60 * 30); // valid for 30 minutes;
+		endif;
+		
+		$return_hash = sha1($customer_id . '|' . $timestamp . '|' . $foxycart_api_key);
+		$full_redirect = $redirect_url . $return_hash . '&fc_customer_id=' . $customer_id . '&timestamp=' . $timestamp . '&fcsid=' . $fcsid;
+		
+		return Redirect::to($full_redirect);
+	}
+
 	public function receive()
 	{
 		$response = '';
@@ -48,7 +74,8 @@ class WebhookController extends BaseController {
 			endif;
 			
 			// update the customer details
-			$user->name = $trans->customer_first_name.' '.$trans->customer_last_name;
+			$user->first_name = $trans->customer_first_name;
+			$user->last_name = $trans->customer_last_name;
 			$user->email = $trans->customer_email;
 			$user->address1 = $trans->customer_address1;
 			$user->address2 = $trans->customer_address2;
@@ -59,6 +86,8 @@ class WebhookController extends BaseController {
 			$user->company = $trans->customer_company;
 			$user->phone = $trans->customer_phone;
 			$user->last_four = substr($trans->cc_number_masked,-4);					
+			$user->exp_month = $trans->cc_exp_month;					
+			$user->exp_year = $trans->cc_exp_year;					
 			
 			// update subscription in the db
 			foreach($trans->transaction_details[0]->transaction_detail as $td):
