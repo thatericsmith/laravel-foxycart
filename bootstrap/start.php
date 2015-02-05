@@ -24,13 +24,11 @@ $app = new Illuminate\Foundation\Application;
 |
 */
 
-$env = $app->detectEnvironment(function(){
-	if(isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='laravel-foxycart.thatericsmith.com'):
-		return 'production';
-	endif;
+$env = $app->detectEnvironment(array(
 
-    return 'local';
-});
+	'local' => array('homestead'),
+
+));
 
 /*
 |--------------------------------------------------------------------------
