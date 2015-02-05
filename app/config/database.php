@@ -57,7 +57,7 @@ return array(
 			'host'      => 'localhost',
 			'database'  => 'laravelfoxycart',
 			'username'  => 'lf',
-			'password'  => '5e@AW1VAvp&FxP',
+			'password'  => 'PE3v)RnS=0EqDN',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',
