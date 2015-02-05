@@ -44,8 +44,10 @@ Route::post('admin/login', ['as'=>'admin.login.post','uses'=> 'AdminController@p
 Route::group(['prefix' => 'admin'], function(){
     
     Route::get('/', ['as'=>'admin.index','uses'=> 'AdminController@index']);
-    Route::get('timeline',['as'=>'admin.timeline','uses'=>'AdminController@timeline']);
+    Route::get('transaction/refresh',['as'=>'admin.transaction.refresh','uses'=>'Admin\TransactionController@refresh']);
+    Route::get('user/{id}/deactivate-subscription',['as'=>'admin.user.deactivate-subscription','uses'=>'Admin\UserController@deactivate_subscription']);
 	Route::resource('user', 'Admin\UserController');
+	Route::resource('transaction', 'Admin\TransactionController');
 });
 
 Route::get('logout',['as'=>'logout','uses'=>'AccountController@getLogout']);

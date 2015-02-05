@@ -7,7 +7,7 @@
 				<address>
 				{{$user->company}}<br>
 				{{$user->address1}} {{$user->address2}}<br>
-				{{$user->city}}, {{$user->state}} {{$user->zip}} <br>
+				{{$user->city}}, {{$user->state}} {{$user->postal_code}} <br>
 				{{$user->phone}}<br>
 				{{$user->email}}<br>
 				</address>

@@ -42,7 +42,7 @@ class FoxyApiController extends BaseController {
 	}
 
 	public function get_transactions(){
-		dd($this->call('transaction_list'));
+		return $this->call('transaction_list');
 	}
 
 	public function get_subscriptions(){
@@ -56,7 +56,7 @@ class FoxyApiController extends BaseController {
 	public function save_customer($user){
 		$data = ['customer_id'=>$user->foxcart_id];
 		$user_arr = $user->toArray();
-		$fields = ['first_name','last_name','address1','address2','company','city','state','zip','country','email','phone'];
+		$fields = ['first_name','last_name','address1','address2','company','city','state','postal_code','country','email','phone'];
 		foreach($fields as $field):
 			$data['customer_'.$field] = $user_arr[$field];
 		endforeach;

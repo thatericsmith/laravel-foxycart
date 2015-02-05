@@ -1,6 +1,6 @@
 <?php namespace Admin;
 
-use User,Config,Exception,Input,Log,Redirect,Response,Topic,View;
+use User,Config,Exception,FoxyApiController,Input,Log,Redirect,Response,Session,View;
 
 class UserController extends \BaseController {
 
@@ -87,5 +87,23 @@ class UserController extends \BaseController {
 		return Redirect::route('admin.user.index');
 	}
 
+
+	// Deactivate Subscription at FoxyCart
+	public function deactivate_subscription($id){
+		$user = User::find($id);
+		$alert = 'There was a problem.';
+		if(!empty($user->subscription_active) && !empty($user->subscription_token)):
+			$api = new FoxyApiController;
+			$response = $api->call('subscription_cancel',['sub_token'=>$user->subscription_token]);
+			if($response->result == 'SUCCESS'):
+				$user->subscription_active = 0;
+				$user->subscription_ends_at = \Carbon\Carbon::tomorrow();
+				$user->save();
+				$alert = 'Subscription set to cancel tomorrow';
+			endif;
+		endif;
+		Session::flash('alert',$alert);
+		return Redirect::route('admin.user.edit',['id'=>$id]);
+	}
 
 }

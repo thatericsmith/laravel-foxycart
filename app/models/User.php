@@ -23,6 +23,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	 */
 	protected $hidden = array('password', 'remember_token');
 
+	public function transactions(){
+        return $this->hasMany('Transaction');
+    }
+
 	public function admin_permalink(){
 		return route('admin.user.edit',$this->id);
 	}
@@ -43,7 +47,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		$user->address2 = $response->customer_address2;
 		$user->city = $response->customer_city;
 		$user->state = $response->customer_state;
-		$user->zip = $response->customer_postal_code;
+		$user->postal_code = $response->customer_postal_code;
 		$user->country = $response->customer_country;
 		$user->company = $response->customer_company;
 		$user->phone = $response->customer_phone;

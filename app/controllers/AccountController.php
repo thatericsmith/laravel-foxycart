@@ -69,7 +69,7 @@ class AccountController extends BaseController {
 		$user->address2 = Input::get('address2');
 		$user->city = Input::get('city');
 		$user->state = Input::get('state');
-		$user->zip = Input::get('zip');
+		$user->postal_code = Input::get('postal_code');
 		$user->phone = Input::get('phone');
 		$user->company = Input::get('company');
 		$user->save();

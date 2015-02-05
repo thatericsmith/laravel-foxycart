@@ -41,8 +41,8 @@
                                 {{Form::text('state',null,['class'=>'form-control'])}}
                             </div>
                             <div class="form-group">
-                                {{Form::label('zip', 'Zip')}}
-                                {{Form::text('zip',null,['class'=>'form-control'])}}
+                                {{Form::label('postal_code', 'Zip')}}
+                                {{Form::text('postal_code',null,['class'=>'form-control'])}}
                             </div>
                             
                             <div class="form-group">

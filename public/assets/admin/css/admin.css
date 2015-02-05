@@ -4,3 +4,11 @@
 	margin:0;
 	padding:10px;
 }
+
+#admin-alert{
+	position: absolute;
+	top:10%;
+	left:30%;
+	width:40%;
+	z-index:900;
+}

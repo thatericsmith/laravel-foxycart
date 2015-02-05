@@ -10,12 +10,12 @@
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Customers
+                        Transactions
                         <small>Control panel</small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="{{URL::route('admin.index')}}"><i class="fa fa-dashboard"></i> Home</a></li>
-                        <li class="active">Customers</li>
+                        <li class="active">Transactions</li>
                     </ol>
                 </section>
 
@@ -28,31 +28,30 @@
                             
                             <div class="box">
                                 <div class="box-header">
-                                    <h3 class="box-title">All Customers</h3>                                    
+                                    <h3 class="box-title">All Transactions <a class="btn btn-default" href="{{route('admin.transaction.refresh')}}">Refresh</a></h3>                                    
                                 </div><!-- /.box-header -->
                                 <div class="box-body table-responsive">
-                                    <table id="example1" class="table table-bordered table-striped table-data">
+                                    <table id="table-transactions" class="table table-bordered table-striped table-data">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
-                                                <th>Name</th>
-                                                <th>Email</th>
-                                                <th>Status</th>
-                                                <th>Subscription</th>
+                                                <th>Customer</th>
+                                                <th>Product</th>
+                                                <th>Total</th>
+                                                <th>Date</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($users as $user)        
+                                            @foreach($transactions as $transaction)        
                                             <tr>
-                                                <td><a href="{{$user->admin_permalink()}}">{{$user->id}}</a></td>
-                                                <td><a href="{{$user->admin_permalink()}}">{{$user->first_name.' '.$user->last_name}}</a></td>
-                                                <td><a title="Send an email to {{$user->first_name.' '.$user->last_name}}" href="mailto:{{$user->email}}">{{$user->email}}</a></td>
-                                                <td>{{$user->subscription_active ? '<span class="label label-success">Active</span>' : '<span class="label label-danger">Inactive</span>'}}</td>
-                                                <td>
-                                                @if(!empty($user->subscription_token))
-                                                <a href="{{$user->subscription_token}}">View Subscription</a>
-                                                @endif
-                                                </td>
+                                                <td>{{$transaction->id}}</td>
+                                                <td><a href="{{$transaction->user->admin_permalink()}}">{{$transaction->user->first_name}} {{$transaction->user->last_name}}</a></td>
+                                                <?php
+                                                    $details = json_decode($transaction->details,true);
+                                                ?>
+                                                <td>{{$details['product_name']}}</td>
+                                                <td>${{number_format($transaction->order_total,2)}}</a></td>
+                                                <td>{{$transaction->created_at}}</td>
                                             </tr>
                                             @endforeach
                                         </tbody>

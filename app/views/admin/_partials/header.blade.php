@@ -1,4 +1,10 @@
 <!-- header logo: style can be found in header.less -->
+        @if(Session::has('alert'))
+        <div id="admin-alert" class="alert alert-info">
+            <button class="close" data-dismiss="alert">&times;</button>
+            {{Session::get('alert')}}
+        </div>
+        @endif
         <header class="header">
             <a href="{{URL::route('admin.index')}}" class="logo">
                 <!-- Add the class icon to your logo image or logo icon to add the margining -->

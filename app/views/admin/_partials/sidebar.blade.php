@@ -29,11 +29,17 @@
                             </a>
                         </li>
                         <li class="">
+                            <a href="{{route('admin.transaction.index')}}">
+                                <i class="fa fa-money"></i> <span>Transactions</span> 
+                            </a>
+                        </li>
+                        
+                        {{--
+                        <li class="">
                             <a href="{{route('admin.timeline')}}">
                                 <i class="fa fa-clock-o"></i> <span>Timeline</span> 
                             </a>
                         </li>
-                        {{--
                         <li class="treeview">
                             <a href="#">
                                 <i class="fa fa-bar-chart-o"></i>

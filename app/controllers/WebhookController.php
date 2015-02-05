@@ -58,46 +58,8 @@ class WebhookController extends BaseController {
 		try{
 			$foxyXML = rc4crypt::decrypt($api_key, urldecode($_POST['FoxyData']));
 		
-			$foxyResponse = simplexml_load_string($foxyXML);
-			$trans = $foxyResponse->transactions[0]->transaction[0];
-			
-			Log::info("NEW TRANSACTION - ".date('Y-m-d g:ia'));
-								
-			// find out who the user is
-			$user = User::where('foxycart_id',$trans->customer_id)->where('role','customer')->first();
-
-			if(empty($user)):
-				// create a user
-				$user = new User;
-				$user->role = 'customer';
-				$user->foxycart_id = $trans->customer_id;
-			endif;
-			
-			// update the customer details
-			$user->first_name = $trans->customer_first_name;
-			$user->last_name = $trans->customer_last_name;
-			$user->email = $trans->customer_email;
-			$user->address1 = $trans->customer_address1;
-			$user->address2 = $trans->customer_address2;
-			$user->city = $trans->customer_city;
-			$user->state = $trans->customer_state;
-			$user->zip = $trans->customer_postal_code;
-			$user->country = $trans->customer_country;
-			$user->company = $trans->customer_company;
-			$user->phone = $trans->customer_phone;
-			$user->last_four = substr($trans->cc_number_masked,-4);					
-			$user->exp_month = $trans->cc_exp_month;					
-			$user->exp_year = $trans->cc_exp_year;					
-			
-			// update subscription in the db
-			foreach($trans->transaction_details[0]->transaction_detail as $td):
-				# TODO - only allows for one subscription - takes the last one.
-				$user->subscription_token = $td->sub_token_url;
-				$user->subscription_active = 1;
-				$user->subscription_ends_at = $td->subscription_enddate;						
-			endforeach;
-
-			$user->save();
+			$response = simplexml_load_string($foxyXML);
+			Transaction::create_from_foxy_api($response,true); // true denotes it's from the webhook
 
 			// Any errors?
 			return 'foxy';
