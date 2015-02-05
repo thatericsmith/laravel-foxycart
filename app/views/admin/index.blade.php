@@ -38,7 +38,7 @@
                                 <div class="icon">
                                     <i class="ion ion-person-add"></i>
                                 </div>
-                                <a href="#" class="small-box-footer">
+                                <a href="{{route('admin.user.index')}}" class="small-box-footer">
                                     More info <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>
@@ -49,16 +49,16 @@
                             <div class="small-box bg-aqua">
                                 <div class="inner">
                                     <h3>
-                                        0
+                                        {{$num_transactions}}
                                     </h3>
                                     <p>
-                                        New Subscriptions 
+                                        Transactions
                                     </p>
                                 </div>
                                 <div class="icon">
-                                    <i class="ion ion-document-text"></i>
+                                    <i class="ion ion-card"></i>
                                 </div>
-                                <a href="#" class="small-box-footer">
+                                <a href="{{route('admin.transaction.index')}}" class="small-box-footer">
                                     More info <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>
@@ -77,7 +77,7 @@
                                 <div class="icon">
                                     <i class="ion ion-checkmark-round"></i>
                                 </div>
-                                <a href="#" class="small-box-footer">
+                                <a href="{{route('admin.user.index')}}?subscription_active=1" class="small-box-footer">
                                     More info <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>
@@ -97,7 +97,7 @@
                                 <div class="icon">
                                     <i class="ion ion-close-circled"></i>
                                 </div>
-                                <a href="#" class="small-box-footer">
+                                <a href="{{route('admin.user.index')}}?subscription_active=0" class="small-box-footer">
                                     More info <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>

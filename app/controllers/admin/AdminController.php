@@ -6,6 +6,7 @@ class AdminController extends BaseController {
 	{		
 		$view_args = [];
 
+		$view_args['num_transactions'] = Transaction::count();
 		$view_args['num_customers'] = User::where('role','customer')->count();
 		$view_args['num_active'] = User::where('role','customer')->where('subscription_active',1)->count();
 		$view_args['num_inactive'] = $view_args['num_customers'] - $view_args['num_active'];

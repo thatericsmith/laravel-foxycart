@@ -11,7 +11,13 @@ class UserController extends \BaseController {
 	 */
 	public function index()
 	{
-		$view_args['users'] = User::orderBy('id','DESC')->where('role','customer')->get();
+		$users = User::orderBy('id','DESC')->where('role','customer');
+		if(Input::has('subscription_active')):
+			$active = Input::get('subscription_active');
+			$users->where('subscription_active',$active);
+		endif;
+		$view_args['users'] = $users->get();
+
 		return View::make('admin.user.index')->with($view_args);
 	}
 
