@@ -1,6 +1,6 @@
 <?php namespace Admin;
 
-use Config,Exception,Input,Log,Redirect,Response,Transaction,View;
+use Config,Exception,FoxyApiController,Input,Log,Redirect,Response,Session,Transaction,View;
 
 class TransactionController extends \BaseController {
 
